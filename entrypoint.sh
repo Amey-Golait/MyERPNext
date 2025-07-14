@@ -6,6 +6,7 @@ echo "[entrypoint] Starting ERPNext Docker container..."
 SITE_NAME="erp.amey.local"
 SITES_DIR="/home/frappe/frappe-bench/sites"
 SITE_PATH="$SITES_DIR/$SITE_NAME"
+DB_HOST="${DB_HOST:-db.onrender.com}"
 
 cd /home/frappe/frappe-bench
 
@@ -17,7 +18,7 @@ if [ ! -d "$SITE_PATH" ]; then
     --admin-password admin \
     --mariadb-root-username root \
     --mariadb-root-password "$MYSQL_ROOT_PASSWORD" \
-    --db-host db
+    --db-host "$DB_HOST"
 
   echo "[entrypoint] Site '$SITE_NAME' created successfully."
 else

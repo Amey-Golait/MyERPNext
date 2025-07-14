@@ -10,6 +10,8 @@ services:
         value: amee8386
       - key: PORT
         value: "8000"
+      - key: DB_HOST
+        value: db.onrender.com
 
   - type: pserv
     name: db
