@@ -3,13 +3,13 @@ FROM frappe/erpnext:v15.20.1
 
 USER root
 
-# Set working directory
-WORKDIR /workspace
+# Set working directory to frappe-bench (important!)
+WORKDIR /home/frappe/frappe-bench
 
-# Copy all apps and bench config
-COPY --chown=frappe:frappe . /workspace
+# Copy everything into frappe-bench, preserving ownership
+COPY --chown=frappe:frappe . /home/frappe/frappe-bench
 
 USER frappe
 
-# Install all app dependencies from requirements.txt
+# Install Python dependencies for custom apps
 RUN pip install --no-cache-dir -r requirements.txt
