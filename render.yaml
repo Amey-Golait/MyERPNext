@@ -16,7 +16,7 @@ services:
     name: db
     plan: starter
     env: docker
-    repo: https://github.com/render-examples/mariadb
+    repo: https://github.com/render-examples/mariadb.git
     dockerfilePath: Dockerfile
     envVars:
       - key: MYSQL_ROOT_PASSWORD
