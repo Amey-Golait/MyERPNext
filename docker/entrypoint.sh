@@ -2,16 +2,19 @@
 
 cd /home/frappe/frappe-bench
 
-# Install all custom apps in editable mode
+echo "== Installing apps listed in sites/apps.txt =="
 for app in $(cat sites/apps.txt); do
-  if [ -f apps/$app/setup.py ]; then
-    echo "Installing $app ..."
+  echo "Looking for apps/$app/setup.py..."
+  if [ -f "apps/$app/setup.py" ]; then
+    echo "Installing $app with pip..."
     pip install -e apps/$app
+  else
+    echo "WARNING: $app missing setup.py — skipping pip install"
   fi
 done
 
-# Build production assets
+echo "== Building production assets =="
 bench build --production --force
 
-# Start development server (for Render)
+echo "== Starting bench server =="
 bench serve --port ${PORT:-8000}
