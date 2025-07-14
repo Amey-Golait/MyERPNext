@@ -4,16 +4,21 @@ set -e
 
 echo "Starting ERPNext setup..."
 
-# Set site name to match Render domain
 SITE_NAME=myerpnext-deploy.onrender.com
+SITE_PATH=sites/$SITE_NAME
 
-# Set ownership to avoid permission issues
+# Ensure working directory
+cd /workspace
+
+# Fix permissions
+mkdir -p sites
 chown -R frappe:frappe /workspace
 
-# Create site if not exists
-if [ ! -d "sites/$SITE_NAME" ]; then
-  echo "Site not found. Creating new site..."
-  bench new-site $SITE_NAME \
+# Create site if missing
+if [ ! -d "$SITE_PATH" ]; then
+  echo "Creating new site: $SITE_NAME"
+
+  bench new-site "$SITE_NAME" \
     --admin-password admin \
     --mariadb-root-username root \
     --mariadb-root-password "$MYSQL_ROOT_PASSWORD" \
@@ -22,19 +27,20 @@ if [ ! -d "sites/$SITE_NAME" ]; then
     --install-app erpnext \
     --force
 
-  # Install custom apps
-  bench --site $SITE_NAME install-app student_master
-  bench --site $SITE_NAME install-app clinic_app
-  bench --site $SITE_NAME install-app payments_processor
-  bench --site $SITE_NAME install-app payment_integration_utils
-  bench --site $SITE_NAME install-app razorpayx_integration
+  bench --site "$SITE_NAME" install-app student_master
+  bench --site "$SITE_NAME" install-app clinic_app
+  bench --site "$SITE_NAME" install-app payments_processor
+  bench --site "$SITE_NAME" install-app payment_integration_utils
+  bench --site "$SITE_NAME" install-app razorpayx_integration
+else
+  echo "Site $SITE_NAME already exists. Skipping site creation."
 fi
 
-# Migrate, build, clear cache
-bench --site $SITE_NAME migrate
+# Run migrations and prepare assets
+bench --site "$SITE_NAME" migrate
 bench setup requirements
 bench build --force
 bench clear-cache
 
-# Start server on port Render expects
+# Serve using the port Render expects
 exec bench serve --port "$PORT"
