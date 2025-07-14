@@ -1,23 +1,16 @@
 #!/bin/bash
-
 set -e
 
 echo "Starting ERPNext setup..."
 
-SITE_NAME=myerpnext-deploy.onrender.com
-SITE_PATH=sites/$SITE_NAME
-
-# Ensure working directory
 cd /workspace
 
-# Fix permissions
-mkdir -p sites
+SITE_NAME=myerpnext-deploy.onrender.com
+
 chown -R frappe:frappe /workspace
 
-# Create site if missing
-if [ ! -d "$SITE_PATH" ]; then
-  echo "Creating new site: $SITE_NAME"
-
+if [ ! -d "sites/$SITE_NAME" ]; then
+  echo "Site not found. Creating new site..."
   bench new-site "$SITE_NAME" \
     --admin-password admin \
     --mariadb-root-username root \
@@ -32,15 +25,11 @@ if [ ! -d "$SITE_PATH" ]; then
   bench --site "$SITE_NAME" install-app payments_processor
   bench --site "$SITE_NAME" install-app payment_integration_utils
   bench --site "$SITE_NAME" install-app razorpayx_integration
-else
-  echo "Site $SITE_NAME already exists. Skipping site creation."
 fi
 
-# Run migrations and prepare assets
 bench --site "$SITE_NAME" migrate
 bench setup requirements
 bench build --force
 bench clear-cache
 
-# Serve using the port Render expects
 exec bench serve --port "$PORT"
