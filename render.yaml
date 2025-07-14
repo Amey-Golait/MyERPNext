@@ -4,8 +4,8 @@ services:
     env: docker
     plan: starter
     region: oregon
-    dockerfilePath: docker/Dockerfile
-    startCommand: bash docker/entrypoint.sh
+    dockerfilePath: Dockerfile
+    startCommand: bash /workspace/entrypoint.sh
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: amee8386
