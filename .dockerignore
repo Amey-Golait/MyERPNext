@@ -7,7 +7,5 @@ __pycache__
 node_modules
 .env
 *.log
-.git
-.gitignore
 docker-compose.yml
 .env.local
