@@ -7,8 +7,10 @@ cd /workspace
 
 SITE_NAME=myerpnext-deploy.onrender.com
 
+# Ensure ownership
 chown -R frappe:frappe /workspace
 
+# Check if site exists
 if [ ! -d "sites/$SITE_NAME" ]; then
   echo "Site not found. Creating new site..."
   bench new-site "$SITE_NAME" \
@@ -27,9 +29,11 @@ if [ ! -d "sites/$SITE_NAME" ]; then
   bench --site "$SITE_NAME" install-app razorpayx_integration
 fi
 
+# Run migrations and serve
 bench --site "$SITE_NAME" migrate
 bench setup requirements
 bench build --force
 bench clear-cache
 
+# Start ERPNext on the port Render expects
 exec bench serve --port "$PORT"
