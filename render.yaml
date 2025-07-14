@@ -2,7 +2,7 @@ services:
   - type: web
     name: erpnext-web
     env: docker
-    dockerfilePath: ./docker/dockerfile
+    dockerfilePath: ./docker/Dockerfile
     startCommand: docker/entrypoint.sh
     envVars:
       - key: SITE_NAME
@@ -20,25 +20,25 @@ services:
   - type: worker
     name: default-worker
     env: docker
-    dockerfilePath: ./docker/dockerfile
+    dockerfilePath: ./docker/Dockerfile
     startCommand: bench worker --queue default
 
   - type: worker
     name: short-worker
     env: docker
-    dockerfilePath: ./docker/dockerfile
+    dockerfilePath: ./docker/Dockerfile
     startCommand: bench worker --queue short
 
   - type: worker
     name: long-worker
     env: docker
-    dockerfilePath: ./docker/dockerfile
+    dockerfilePath: ./docker/Dockerfile
     startCommand: bench worker --queue long
 
   - type: worker
     name: scheduler
     env: docker
-    dockerfilePath: ./docker/dockerfile
+    dockerfilePath: ./docker/Dockerfile
     startCommand: bench schedule
 
 databases:
