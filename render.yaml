@@ -10,7 +10,7 @@ services:
       - key: MYSQL_ROOT_PASSWORD
         value: your_mysql_root_password
       - key: PORT
-        value: 8000  # Required by Render, your app will use $PORT internally
+        value: 8000
 
   - type: pserv
     name: mariadb
