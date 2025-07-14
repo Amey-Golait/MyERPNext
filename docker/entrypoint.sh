@@ -6,10 +6,10 @@ echo "Starting ERPNext Docker Entrypoint"
 SITE_NAME="myerpnext-deploy.onrender.com"
 SITE_PATH="sites/${SITE_NAME}"
 
-# Navigate to bench path
-cd /home/frappe/frappe-bench
+# Navigate to correct path
+cd /workspace
 
-# Ensure correct permissions
+# Fix ownership (optional, safe fallback)
 chown -R frappe:frappe .
 
 # Create site only if it doesn't exist
@@ -34,11 +34,9 @@ else
   echo "Site '$SITE_NAME' already exists. Skipping creation."
 fi
 
-# Final setup
 echo "Running migrate, build, and serve..."
 bench --site "$SITE_NAME" migrate
 bench build --force
 bench clear-cache
 
-# Start the server
 exec bench serve --port "$PORT"
