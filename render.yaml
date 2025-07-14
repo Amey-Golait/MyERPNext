@@ -5,17 +5,17 @@ services:
     plan: starter
     region: oregon
     dockerfilePath: docker/Dockerfile
-    entrypoint: ./docker/entrypoint.sh
+    startCommand: bash docker/entrypoint.sh
     envVars:
       - key: MYSQL_ROOT_PASSWORD
-        value: amee8386      
+        value: amee8386
 
   - type: pserv
-    name: db                
+    name: db
     plan: starter
     env: docker
     repo: https://github.com/render-examples/mariadb
     dockerfilePath: Dockerfile
     envVars:
       - key: MYSQL_ROOT_PASSWORD
-        value: amee8386 
+        value: amee8386
