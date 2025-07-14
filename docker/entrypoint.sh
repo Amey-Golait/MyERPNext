@@ -4,9 +4,10 @@ set -e
 
 echo "Starting ERPNext setup..."
 
-SITE_NAME=erp.amey.local
+# Set site name to match Render domain
+SITE_NAME=myerpnext-deploy.onrender.com
 
-# Set ownership (may help avoid file permission issues)
+# Set ownership to avoid permission issues
 chown -R frappe:frappe /workspace
 
 # Create site if not exists
@@ -29,13 +30,11 @@ if [ ! -d "sites/$SITE_NAME" ]; then
   bench --site $SITE_NAME install-app razorpayx_integration
 fi
 
-# Apply patches and migrate
+# Migrate, build, clear cache
 bench --site $SITE_NAME migrate
-
-# Build assets
 bench setup requirements
 bench build --force
 bench clear-cache
 
-# Start server on Render-assigned port
-exec bench serve --port "$PORT"
+# Start server on port Render expects
+exec bench serve --por
