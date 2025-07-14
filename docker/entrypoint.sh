@@ -2,6 +2,10 @@
 
 cd /home/frappe/frappe-bench
 
+# Debug: List contents of apps directory
+echo "== Apps directory content =="
+ls -la /home/frappe/frappe-bench/apps
+
 # Build production assets
 bench build --production --force
 
