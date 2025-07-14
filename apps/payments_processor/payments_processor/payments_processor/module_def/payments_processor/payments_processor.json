@@ -1,0 +1,8 @@
+{
+  "doctype": "Module Def",
+  "module_name": "Payments Processor",
+  "app_name": "payments_processor",
+  "app_label": "Payments Processor",
+  "is_custom": 0
+}
+

@@ -1,0 +1,34 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.razorpayx_payout_status in [\"Cancelled\", \"Rejected\", \"Failed\", \"Reversed\"]",
+ "creation": "2025-01-21 13:45:11.433147",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Payment Entry",
+ "enabled": 0,
+ "event": "Method",
+ "idx": 0,
+ "is_standard": 0,
+ "message": "<p>Dear {{ frappe.db.get_value(\"User\", {\"email\": doc.payment_authorized_by},\"first_name\") }},</p>\n\n<p>The payout has been <span style=\"color: red\">{{ doc.razorpayx_payout_status }}!</span> for Payment Entry {{ doc.name }}.</p>\n\n<p>For more details, visit your ERPNext site and check the details.</p>\n",
+ "message_type": "Markdown",
+ "method": "send_rpx_payout_status_update",
+ "modified": "2025-03-28 12:02:21.410098",
+ "modified_by": "Administrator",
+ "module": "Razorpayx Integration",
+ "name": "Failed Payout",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "payment_authorized_by",
+   "receiver_by_role": ""
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "sender": "",
+ "sender_email": "",
+ "subject": "Payout has been {{ doc.razorpayx_payout_status }} for Payment Entry {{ doc.name }}",
+ "value_changed": "razorpayx_payout_status"
+}

@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: erpnext-web
+    env: docker
+    dockerfilePath: ./docker/dockerfile
+    startCommand: docker/entrypoint.sh
+    envVars:
+      - key: SITE_NAME
+        value: erp.amey.local
+      - key: INSTALL_APPS
+        value: erpnext clinic_app student_master payments_processor payment_integration_utils razorpayx_integration
+      - key: DB_ROOT_USER
+        value: root
+      - key: MYSQL_ROOT_PASSWORD
+        value: amee8386
+      - key: ADMIN_PASSWORD
+        value: admin
+    autoDeploy: true
+
+  - type: worker
+    name: default-worker
+    env: docker
+    dockerfilePath: ./docker/dockerfile
+    startCommand: bench worker --queue default
+
+  - type: worker
+    name: short-worker
+    env: docker
+    dockerfilePath: ./docker/dockerfile
+    startCommand: bench worker --queue short
+
+  - type: worker
+    name: long-worker
+    env: docker
+    dockerfilePath: ./docker/dockerfile
+    startCommand: bench worker --queue long
+
+  - type: worker
+    name: scheduler
+    env: docker
+    dockerfilePath: ./docker/dockerfile
+    startCommand: bench schedule
+
+databases:
+  - name: mariadb
+    plan: free
