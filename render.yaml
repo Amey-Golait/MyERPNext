@@ -9,6 +9,8 @@ services:
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: amee8386
+      - key: PORT
+        value: "8000"
 
   - type: pserv
     name: db

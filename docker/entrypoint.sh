@@ -1,42 +1,46 @@
 #!/bin/bash
 set -e
 
-echo "Starting ERPNext Docker Entrypoint"
+echo "[entrypoint] Starting ERPNext Docker container..."
 
-SITE_NAME="myerpnext-deploy.onrender.com"
-SITE_PATH="sites/${SITE_NAME}"
+SITE_NAME="erp.amey.local"
+SITES_DIR="/home/frappe/frappe-bench/sites"
+SITE_PATH="$SITES_DIR/$SITE_NAME"
 
-# Navigate to correct path
-cd /workspace
+cd /home/frappe/frappe-bench
 
-# Fix ownership (optional, safe fallback)
-chown -R frappe:frappe .
-
-# Create site only if it doesn't exist
+echo "[entrypoint] Checking if site '$SITE_NAME' exists at $SITE_PATH..."
 if [ ! -d "$SITE_PATH" ]; then
-  echo "Site '$SITE_NAME' not found. Creating..."
+  echo "[entrypoint] Site $SITE_NAME not found. Creating site..."
+
   bench new-site "$SITE_NAME" \
     --admin-password admin \
     --mariadb-root-username root \
     --mariadb-root-password "$MYSQL_ROOT_PASSWORD" \
-    --db-host db \
-    --no-mariadb-socket \
-    --force
+    --db-host db
 
-  echo "Installing apps..."
-  bench --site "$SITE_NAME" install-app erpnext
-  bench --site "$SITE_NAME" install-app student_master
-  bench --site "$SITE_NAME" install-app clinic_app
-  bench --site "$SITE_NAME" install-app payments_processor
-  bench --site "$SITE_NAME" install-app payment_integration_utils
-  bench --site "$SITE_NAME" install-app razorpayx_integration
+  echo "[entrypoint] Site $SITE_NAME created successfully."
 else
-  echo "Site '$SITE_NAME' already exists. Skipping creation."
+  echo "[entrypoint] Site $SITE_NAME already exists."
 fi
 
-echo "Running migrate, build, and serve..."
-bench --site "$SITE_NAME" migrate
-bench build --force
-bench clear-cache
+echo "[entrypoint] Setting current site to $SITE_NAME"
+echo "$SITE_NAME" > "$SITES_DIR/currentsite.txt"
 
+echo "[entrypoint] Checking and installing apps..."
+
+installed_apps=$(bench --site "$SITE_NAME" list-apps || true)
+for app in clinic_app student_master payments_processor payment_integration_utils razorpayx_integration; do
+  if ! echo "$installed_apps" | grep -q "$app"; then
+    echo "[entrypoint] Installing app: $app"
+    bench --site "$SITE_NAME" install-app "$app"
+  else
+    echo "[entrypoint] App $app already installed."
+  fi
+done
+
+echo "[entrypoint] Running database migrations..."
+bench --site "$SITE_NAME" migrate
+
+echo "[entrypoint] Starting Frappe server using Gunicorn..."
 exec bench serve --port "$PORT"
