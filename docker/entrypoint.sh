@@ -1,19 +1,41 @@
 #!/bin/bash
 
-cd /home/frappe/frappe-bench
+set -e
 
-echo "== Installing custom apps =="
-for app in $(cat sites/apps.txt); do
-  if [ -f "apps/$app/setup.py" ]; then
-    echo "Installing $app"
-    pip install -e apps/$app
-  else
-    echo "Skipping $app (no setup.py)"
-  fi
-done
+echo "Starting ERPNext setup..."
 
-echo "== Build production assets =="
-bench build --production --force
+SITE_NAME=erp.amey.local
 
-echo "== Start bench server =="
-bench serve --port ${PORT:-8000} --noreload
+# Set ownership (may help avoid file permission issues)
+chown -R frappe:frappe /workspace
+
+# Create site if not exists
+if [ ! -d "sites/$SITE_NAME" ]; then
+  echo "Site not found. Creating new site..."
+  bench new-site $SITE_NAME \
+    --admin-password admin \
+    --mariadb-root-username root \
+    --mariadb-root-password "$MYSQL_ROOT_PASSWORD" \
+    --db-host db \
+    --no-mariadb-socket \
+    --install-app erpnext \
+    --force
+
+  # Install custom apps
+  bench --site $SITE_NAME install-app student_master
+  bench --site $SITE_NAME install-app clinic_app
+  bench --site $SITE_NAME install-app payments_processor
+  bench --site $SITE_NAME install-app payment_integration_utils
+  bench --site $SITE_NAME install-app razorpayx_integration
+fi
+
+# Apply patches and migrate
+bench --site $SITE_NAME migrate
+
+# Build assets
+bench setup requirements
+bench build --force
+bench clear-cache
+
+# Start server on Render-assigned port
+exec bench serve --port "$PORT"

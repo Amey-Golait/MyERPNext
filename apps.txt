@@ -1,0 +1,7 @@
+frappe
+erpnext
+student_master
+clinic_app
+payment_integration_utils
+payments_processor
+razorpayx_integration

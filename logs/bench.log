@@ -731,3 +731,9 @@
 2025-07-14 11:48:42,718 INFO /Users/amee/.pyenv/versions/3.11.9/bin/bench schedule
 2025-07-14 11:48:42,777 INFO /Users/amee/.pyenv/versions/3.11.9/bin/bench worker
 2025-07-14 12:00:02,381 INFO /Users/amee/Library/Python/3.9/bin/bench --verbose --site all backup
+2025-07-14 15:31:06,776 INFO /Users/amee/.pyenv/versions/3.11.9/bin/bench setup requirements
+2025-07-14 15:31:06,806 DEBUG /Users/amee/erpnext-bench/env/bin/python -m pip install --quiet --upgrade pip
+2025-07-14 15:31:10,038 WARNING /Users/amee/.pyenv/versions/3.11.9/bin/bench setup requirements executed with exit code 1
+2025-07-14 15:31:10,969 INFO /Users/amee/.pyenv/versions/3.11.9/bin/bench build --force
+2025-07-14 15:31:58,888 INFO /Users/amee/.pyenv/versions/3.11.9/bin/bench clear-cache
+2025-07-14 15:32:02,501 INFO /Users/amee/.pyenv/versions/3.11.9/bin/bench restart
