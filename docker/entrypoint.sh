@@ -37,4 +37,4 @@ bench build --force
 bench clear-cache
 
 # Start server on port Render expects
-exec bench serve --por
+exec bench serve --port "$PORT"
