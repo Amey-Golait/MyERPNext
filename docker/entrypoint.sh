@@ -16,4 +16,4 @@ echo "== Build production assets =="
 bench build --production --force
 
 echo "== Start bench server =="
-bench serve --port ${PORT:-8000}
+bench serve --port ${PORT:-8000} --noreload
