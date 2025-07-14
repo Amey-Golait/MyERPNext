@@ -2,9 +2,13 @@
 
 cd /home/frappe/frappe-bench
 
-# Debug: List contents of apps directory
-echo "== Apps directory content =="
-ls -la /home/frappe/frappe-bench/apps
+# Install all custom apps in editable mode
+for app in $(cat sites/apps.txt); do
+  if [ -f apps/$app/setup.py ]; then
+    echo "Installing $app ..."
+    pip install -e apps/$app
+  fi
+done
 
 # Build production assets
 bench build --production --force
