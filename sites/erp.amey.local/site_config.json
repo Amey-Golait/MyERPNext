@@ -1,10 +1,13 @@
 {
- "db_name": "_06a502cd4c3d610c",
- "db_password": "FTEBnucCaTygmZEy",
- "db_type": "mariadb",
- "developer_mode": 1,
- "enable_server_scripts": 1,
- "domains": [
+  "db_name": "erpnext",
+  "db_password": "amee8386",
+  "db_type": "mariadb",
+  "db_host": "mariadb-on-render",
+  "db_port": 3306,
+  "db_user": "amee",
+  "developer_mode": 1,
+  "enable_server_scripts": 1,
+  "domains": [
     "erp.amey.local",
     "myerpnext-deploy.onrender.com"
   ]
