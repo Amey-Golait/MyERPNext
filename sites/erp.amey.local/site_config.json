@@ -1,10 +1,7 @@
 {
-  "db_name": "erpnext",
-  "db_password": "amee8386",
+  "db_name": "sql12790072",
+  "db_password": "DHqmEDndjN",
   "db_type": "mariadb",
-  "db_host": "mariadb-on-render",
-  "db_port": 3306,
-  "db_user": "amee",
   "developer_mode": 1,
   "enable_server_scripts": 1,
   "domains": [

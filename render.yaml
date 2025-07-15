@@ -11,28 +11,4 @@ services:
       - key: PORT
         value: "8000"
       - key: DB_HOST
-        value: mariadb-on-render
-      - key: DB_PORT
-        value: "3306"
-      - key: DB_NAME
-        value: erpnext
-      - key: DB_USER
-        value: amee
-      - key: DB_PASSWORD
-        value: amee8386
-
-  - type: pserv
-    name: mariadb-on-render
-    plan: starter
-    env: docker
-    repo: https://github.com/render-examples/mariadb.git
-    dockerfilePath: Dockerfile
-    envVars:
-      - key: MYSQL_ROOT_PASSWORD
-        value: amee8386
-      - key: MYSQL_DATABASE
-        value: erpnext
-      - key: MYSQL_USER
-        value: amee
-      - key: MYSQL_PASSWORD
-        value: amee8386
+        value: sql12.freesqldatabase.com
